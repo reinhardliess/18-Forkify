@@ -14,5 +14,8 @@
   "keywords": [],
   "author": "Reinhard Liess",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "fracty": "^1.0.11"
+  }
 }
