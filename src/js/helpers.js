@@ -1,3 +1,18 @@
+import { TIMEOUT_SEC } from "./config";
+
+/**
+ * Rejects Promise after s seconds
+ * @param {number} s - seconds
+ * @returns {Promise}
+ */
+const timeout = (s) => {
+  return new Promise(function (_, reject) {
+    setTimeout(function () {
+      reject(new Error(`Request took too long! Timeout after ${s} second`));
+    }, s * 1000);
+  });
+};
+
 /**
  * Converts string to camelCase
  * @param {string} str
@@ -25,3 +40,21 @@ export const camelCaseKeys = (obj) =>
     acc[toCamelCase(key)] = obj[key];
     return acc;
   }, {});
+
+/**
+ * Get data in JSON from api
+ * @param {string} id - recipe id
+ * @returns {Promise} data from api
+ */
+export const getJSON = async (url) => {
+  try {
+    const res = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]);
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(`API error: ${data.message} (${res.status})`);
+    }
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

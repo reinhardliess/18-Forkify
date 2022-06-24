@@ -1,4 +1,4 @@
-import { camelCaseKeys } from "./helpers";
+import { camelCaseKeys, getJSON } from "./helpers";
 import { API_URL } from "./config";
 
 export const state = {
@@ -13,15 +13,11 @@ export const state = {
  */
 export const loadRecipe = async (id) => {
   try {
-    const res = await fetch(`${API_URL}/${id}`);
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(`API error: ${data.message} (${res.status})`);
-    }
-    const recipe = camelCaseKeys(data.data.recipe);
-    console.log(recipe);
-    state.recipe = recipe;
+    const data = await getJSON(`${API_URL}/${id}`);
+    state.recipe = camelCaseKeys(data.data.recipe);
+    console.log(state.recipe);
   } catch (error) {
     console.error(error.message);
+    throw error;
   }
 };

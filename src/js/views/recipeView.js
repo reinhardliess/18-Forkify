@@ -4,7 +4,12 @@ import fracty from "fracty";
 class RecipeView {
   #parentElement = document.querySelector(".recipe");
   #data;
+  #errorMessage = "No recipes found for your query. Please try again!";
 
+  /**
+   * Render recipe
+   * @param {object} data - recipe object from api
+   */
   render(data) {
     this.#data = data;
     const markup = this._generateMarkup();
@@ -12,10 +17,16 @@ class RecipeView {
     this.#parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 
+  /**
+   * Clear contents of container
+   */
   _clear() {
     this.#parentElement.innerHTML = "";
   }
 
+  /**
+   * Generate recipe markup
+   */
   _generateMarkup() {
     const html = `
         <figure class="recipe__fig">
@@ -103,6 +114,9 @@ class RecipeView {
     return html;
   }
 
+  /**
+   * Generate recipe ingredients markup
+   */
   _generateIngredientMarkup(ingredient) {
     const quantity = ingredient.quantity ? fracty(ingredient.quantity) : "";
     return `
@@ -118,6 +132,9 @@ class RecipeView {
       </li>`;
   }
 
+  /**
+   * Renders waiting spinner
+   */
   renderSpinner() {
     const html = `
     <div class="spinner">
@@ -125,7 +142,37 @@ class RecipeView {
         <use href="${icons}#icon-loader"></use>
       </svg>
     </div>`;
+    this._clear();
     this.#parentElement.insertAdjacentHTML("afterbegin", html);
+  }
+
+  /**
+   * Installs event handler
+   * @param {function} handler - event handler callback
+   */
+  addHandlerRender(handler) {
+    ["hashchange", "load"].forEach((type) =>
+      window.addEventListener(type, handler)
+    );
+  }
+
+  /**
+   * Displays error message in DOM
+   * @param {string} [message=this.#errorMessage] - error message
+   */
+  renderErrorMessage(message = this.#errorMessage) {
+    const markup = `
+    <div class="error">
+      <div>
+        <svg>
+          <use href="src/img/icons.svg#icon-alert-triangle"></use>
+        </svg>
+      </div>
+      <p>${message}</p>
+    </div>
+    `;
+    this._clear();
+    this.#parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 }
 
