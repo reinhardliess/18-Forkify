@@ -1,13 +1,18 @@
 class SearchView {
   _parentElement = document.querySelector("form.search");
+  _inputSearch = this._parentElement.querySelector(".search__field");
 
   /**
    * Retrieves the search input
    * @returns {string} search input text
    */
   getQuery() {
-    const inputSearch = this._parentElement.querySelector(".search__field");
-    return inputSearch.value;
+    // const inputSearch = this._parentElement.querySelector(".search__field");
+    return this._inputSearch.value;
+  }
+
+  clearSearchInput() {
+    this._inputSearch.value = "";
   }
 
   /**

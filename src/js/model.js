@@ -1,11 +1,13 @@
 import { camelCaseKeys, getJSON } from "./helpers";
-import { API_URL } from "./config";
+import { API_URL, RESULTS_PER_PAGE } from "./config";
 
 export const state = {
   recipe: {},
   search: {
     query: "",
     results: [],
+    currentPage: 0,
+    resultsPerPage: RESULTS_PER_PAGE,
   },
   bookmarks: {},
 };
@@ -37,3 +39,11 @@ export const loadSearchResults = async (query) => {
 };
 
 // loadSearchResults("avocado");
+
+export const getPaginationResults = (page = 1) => {
+  const { results, resultsPerPage } = state.search;
+  state.search.currentPage = page;
+  state.search.numPages = Math.ceil(results.length / resultsPerPage);
+  const offset = (page - 1) * resultsPerPage;
+  return results.slice(offset, offset + resultsPerPage);
+};
