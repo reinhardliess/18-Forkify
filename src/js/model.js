@@ -6,7 +6,7 @@ export const state = {
   search: {
     query: "",
     results: [],
-    currentPage: 0,
+    currentPage: 1,
     resultsPerPage: RESULTS_PER_PAGE,
   },
   bookmarks: {},
@@ -58,10 +58,11 @@ export const loadSearchResults = async (query) => {
 
 /**
  * Get results for page
- * @param {number} [page=1] - page
+ * @param {number} [page] - page (default: current page)
  * @returns {object[]} paginated results
  */
-export const getPaginationResults = (page = 1) => {
+export const getPaginationResults = (page = state.search.currentPage) => {
+  console.log("page", page);
   const { results, resultsPerPage } = state.search;
   state.search.currentPage = page;
   state.search.numPages = Math.ceil(results.length / resultsPerPage);
