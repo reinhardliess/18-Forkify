@@ -1,3 +1,4 @@
+import { doc } from "prettier";
 import icons from "url:../../img/icons.svg";
 
 export default class View {
@@ -13,6 +14,7 @@ export default class View {
     const markup = this._generateMarkup();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
+
 
   /**
    * Clear contents of container

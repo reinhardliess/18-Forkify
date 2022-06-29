@@ -26,6 +26,22 @@ export const loadRecipe = async (id) => {
   }
 };
 
+/**
+ * Adjust number of servings
+ * @param {number} numServings - number of servings
+ */
+export const updateServings = (numServings) => {
+  state.recipe.ingredients.forEach((ingredient) => {
+    ingredient.quantity =
+      (ingredient.quantity * numServings) / state.recipe.servings;
+  });
+  state.recipe.servings = numServings;
+};
+
+/**
+ * Load search results
+ * @param {string} query - query text
+ */
 export const loadSearchResults = async (query) => {
   try {
     state.search.query = query;
@@ -40,6 +56,11 @@ export const loadSearchResults = async (query) => {
 
 // loadSearchResults("avocado");
 
+/**
+ * Get results for page
+ * @param {number} [page=1] - page
+ * @returns {object[]} paginated results
+ */
 export const getPaginationResults = (page = 1) => {
   const { results, resultsPerPage } = state.search;
   state.search.currentPage = page;

@@ -50,10 +50,17 @@ const controlPagination = (gotoPage) => {
   paginationView.render(model.state.search);
 };
 
+const controlServings = (numServings) => {
+  model.updateServings(numServings);
+  recipeView.render(model.state.recipe);
+  // recipeView.update(model.state.recipe);
+};
+
 const init = () => {
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerPagination(controlPagination);
+  recipeView.addHandlerServings(controlServings);
 };
 
 // == Execute Section ==
