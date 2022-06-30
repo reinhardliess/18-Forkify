@@ -12,7 +12,9 @@ export default class View {
     this._clear();
     this._data = data;
     const markup = this._generateMarkup();
-    this._parentElement.insertAdjacentHTML("afterbegin", markup);
+    if (markup) {
+      this._parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
   }
 
   update(data) {

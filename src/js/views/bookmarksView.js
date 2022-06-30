@@ -1,17 +1,15 @@
-import { API_URL } from "../config";
 import View from "./view";
 
-class SearchResultsView extends View {
-  _parentElement = document.querySelector(".search-results .results");
-  _errorMessage =
-    "No recipes found for your search. Please try a different search!";
+class BookmarksView extends View {
+  _parentElement = document.querySelector(".bookmarks__list");
+  _errorMessage = "No bookmarks yet. Find a nice recipe and bookmark it :)";
 
   _generateMarkup() {
     if (this._data.length === 0) {
       this.renderErrorMessage();
       return;
     }
-
+    // console.log("bmk", this._data);
     const markup = this._data.map(this._generateResultMarkup).join("");
     return markup;
   }
@@ -41,4 +39,4 @@ class SearchResultsView extends View {
   }
 }
 
-export default new SearchResultsView();
+export default new BookmarksView();

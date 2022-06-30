@@ -9,7 +9,7 @@ export const state = {
     currentPage: 1,
     resultsPerPage: RESULTS_PER_PAGE,
   },
-  bookmarks: {},
+  bookmarks: [],
 };
 
 /**
@@ -20,6 +20,9 @@ export const loadRecipe = async (id) => {
   try {
     const data = await getJSON(`${API_URL}/${id}`);
     state.recipe = camelCaseKeys(data.data.recipe);
+    state.recipe.bookmarked = !!state.bookmarks.find(
+      (bookmark) => bookmark.id === state.recipe.id
+    );
   } catch (error) {
     console.error(error.message);
     throw error;
@@ -38,6 +41,19 @@ export const updateServings = (numServings) => {
   state.recipe.servings = numServings;
 };
 
+export const addBookmark = () => {
+  state.bookmarks.push(state.recipe);
+  state.recipe.bookmarked = true;
+};
+
+export const removeBookmark = () => {
+  const index = state.bookmarks.findIndex(
+    (bookmark) => bookmark.id === state.recipe.id
+  );
+  state.bookmarks.splice(index, 1);
+  state.recipe.bookmarked = false;
+};
+
 /**
  * Load search results
  * @param {string} query - query text
@@ -49,6 +65,7 @@ export const loadSearchResults = async (query) => {
     state.search.results = data.data.recipes.map((recipe) =>
       camelCaseKeys(recipe)
     );
+    state.search.currentPage = 1;
   } catch (error) {
     throw error;
   }
@@ -62,7 +79,6 @@ export const loadSearchResults = async (query) => {
  * @returns {object[]} paginated results
  */
 export const getPaginationResults = (page = state.search.currentPage) => {
-  console.log("page", page);
   const { results, resultsPerPage } = state.search;
   state.search.currentPage = page;
   state.search.numPages = Math.ceil(results.length / resultsPerPage);

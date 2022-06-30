@@ -60,9 +60,13 @@ class RecipeView extends View {
               <use href="${icons}#icon-user"></use>
             </svg>
           </div>
-          <button class="btn--round">
+          <button class="btn--round btn-toggle-bookmark" data-bookmarked="${
+            this._data.bookmarked ? 1 : 0
+          }">
             <svg class="">
-              <use href="${icons}#icon-bookmark-fill"></use>
+              <use href="${icons}#icon-bookmark${
+      this._data.bookmarked ? "-fill" : ""
+    }"></use>
             </svg>
           </button>
         </div>
@@ -138,6 +142,23 @@ class RecipeView extends View {
       if (newServings > 0) {
         handler(newServings);
       }
+    });
+  }
+
+  /**
+   * Installs bookmark button event handler
+   * @param {function} handler - callback
+   */
+  addHandlerToggleBookmark(handler) {
+    this._parentElement.addEventListener("click", function (e) {
+      e.preventDefault();
+      const btn = e.target.closest(".btn-toggle-bookmark");
+      if (!btn) {
+        return;
+      }
+      const bookmarkedState = +btn.dataset.bookmarked;
+      // console.log("bookmarked", bookmarkedState);
+      handler(bookmarkedState);
     });
   }
 }
