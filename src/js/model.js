@@ -71,8 +71,6 @@ export const loadSearchResults = async (query) => {
   }
 };
 
-// loadSearchResults("avocado");
-
 /**
  * Get results for page
  * @param {number} [page] - page (default: current page)
@@ -84,4 +82,15 @@ export const getPaginationResults = (page = state.search.currentPage) => {
   state.search.numPages = Math.ceil(results.length / resultsPerPage);
   const offset = (page - 1) * resultsPerPage;
   return results.slice(offset, offset + resultsPerPage);
+};
+
+export const saveBookmarks = () => {
+  localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
+};
+
+export const loadBookmarks = () => {
+  const storedBookmarks = localStorage.getItem("bookmarks");
+  if (storedBookmarks) {
+    state.bookmarks = JSON.parse(storedBookmarks);
+  }
 };

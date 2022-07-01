@@ -21,7 +21,8 @@ const controlRecipes = async () => {
     await model.loadRecipe(id);
     recipeView.render(model.state.recipe);
     searchResultsView.update(model.getPaginationResults());
-    bookmarksView.render(model.state.bookmarks);
+    // bookmarksView.render(model.state.bookmarks);
+    bookmarksView.update(model.state.bookmarks);
   } catch (error) {
     console.error(error.message);
     recipeView.renderErrorMessage();
@@ -43,6 +44,7 @@ const controlBookmarks = (bookmarkedState) => {
     }
     recipeView.update(model.state.recipe);
     bookmarksView.render(model.state.bookmarks);
+    model.saveBookmarks();
   } catch (error) {
     bookmarksView.renderErrorMessage();
   }
@@ -66,6 +68,10 @@ const controlSearchResults = async () => {
   }
 };
 
+/**
+ * Callback for pagination buttons
+ * @param {number} gotoPage - number of page
+ */
 const controlPagination = (gotoPage) => {
   searchResultsView.render(model.getPaginationResults(gotoPage));
   paginationView.render(model.state.search);
@@ -77,6 +83,8 @@ const init = () => {
   recipeView.addHandlerToggleBookmark(controlBookmarks);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerPagination(controlPagination);
+  model.loadBookmarks();
+  bookmarksView.render(model.state.bookmarks);
 };
 
 // == Execute Section ==
