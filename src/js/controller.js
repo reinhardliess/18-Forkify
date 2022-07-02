@@ -44,9 +44,11 @@ const controlBookmarks = (bookmarkedState) => {
     }
     recipeView.update(model.state.recipe);
     bookmarksView.render(model.state.bookmarks);
+    console.log(model.state.bookmarks);
     model.saveBookmarks();
   } catch (error) {
     bookmarksView.renderErrorMessage();
+    console.error(error);
   }
 };
 

@@ -2,11 +2,6 @@ import View from "./view";
 
 export default class ResultsView extends View {
   _generateMarkup() {
-    if (this._data.length === 0) {
-      this.renderErrorMessage();
-      return;
-    }
-
     const markup = this._data.map(this._generateResultMarkup).join("");
     return markup;
   }

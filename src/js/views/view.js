@@ -8,6 +8,10 @@ export default class View {
    * @param {object} data - recipe object from api
    */
   render(data) {
+    if (!data || (Array.isArray(data) && data.length === 0)) {
+      return this.renderErrorMessage();
+    }
+
     this._clear();
     this._data = data;
     const markup = this._generateMarkup();
