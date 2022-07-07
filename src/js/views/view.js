@@ -17,9 +17,14 @@ export default class View {
     const markup = this._generateMarkup();
     if (markup) {
       this._parentElement.insertAdjacentHTML("afterbegin", markup);
+      // this._parentElement.insertAdjacentHTML("beforeend", markup);
     }
   }
 
+  /**
+   * Update text nodes and attributes
+   * @param {object} data - object to update
+   */
   update(data) {
     this._data = data;
     const newMarkup = this._generateMarkup();
@@ -27,11 +32,9 @@ export default class View {
     const newDOM = document.createRange().createContextualFragment(newMarkup);
     const newElements = Array.from(newDOM.querySelectorAll("*"));
     const curElements = Array.from(this._parentElement.querySelectorAll("*"));
-    // console.log(newElements);
 
     newElements.forEach((newEl, i) => {
       const curEl = curElements[i];
-      // console.log(curEl, newEl.isEqualNode(curEl));
 
       // Updates changed text nodes
       if (
@@ -70,6 +73,9 @@ export default class View {
     this._parentElement.insertAdjacentHTML("afterbegin", html);
   }
 
+  /**
+   * Removes waiting spinner
+   */
   removeSpinner() {
     const spinnerEl = this._parentElement.querySelector(".spinner");
     spinnerEl && this._parentElement.removeChild(spinnerEl);
@@ -89,6 +95,25 @@ export default class View {
       </div>
       <p>${message}</p>
     </div>
+    `;
+    this._clear();
+    this._parentElement.insertAdjacentHTML("afterbegin", markup);
+  }
+
+  /**
+   * Displays message in DOM
+   * @param {string} message - message
+   */
+  renderMessage(message) {
+    const markup = `
+      <div class="message">
+        <div>
+          <svg>
+            <use href="${icons}#icon-smile"></use>
+          </svg>
+        </div>
+        <p>${message}</p>
+      </div>
     `;
     this._clear();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);

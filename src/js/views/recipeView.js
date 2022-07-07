@@ -1,6 +1,7 @@
 import icons from "url:../../img/icons.svg";
 import fracty from "fracty";
 import View from "./view";
+import { API_KEY } from "../apikey";
 
 class RecipeView extends View {
   _parentElement = document.querySelector(".recipe");
@@ -10,6 +11,7 @@ class RecipeView extends View {
    * Generate recipe markup
    */
   _generateMarkup() {
+    const userGeneratedState = this._data.key !== API_KEY ? "hidden" : "";
     const html = `
         <figure class="recipe__fig">
           <img src=${this._data.imageUrl} alt="Tomato" class="recipe__img" />
@@ -54,8 +56,7 @@ class RecipeView extends View {
               </button>
             </div>
           </div>
-
-          <div class="recipe__user-generated">
+          <div class="recipe__user-generated ${userGeneratedState}">
             <svg>
               <use href="${icons}#icon-user"></use>
             </svg>
@@ -131,13 +132,17 @@ class RecipeView extends View {
     );
   }
 
+  /**
+   * Installs handler for +- buttons to change servings
+   * @param {function} handler
+   */
   addHandlerServings(handler) {
     this._parentElement.addEventListener("click", function (e) {
-      e.preventDefault();
       const btn = e.target.closest(".btn--update-servings");
       if (!btn) {
         return;
       }
+      e.preventDefault();
       const newServings = +btn.dataset.servings;
       if (newServings > 0) {
         handler(newServings);
@@ -151,13 +156,12 @@ class RecipeView extends View {
    */
   addHandlerToggleBookmark(handler) {
     this._parentElement.addEventListener("click", function (e) {
-      e.preventDefault();
       const btn = e.target.closest(".btn-toggle-bookmark");
       if (!btn) {
         return;
       }
+      e.preventDefault();
       const bookmarkedState = +btn.dataset.bookmarked;
-      // console.log("bookmarked", bookmarkedState);
       handler(bookmarkedState);
     });
   }

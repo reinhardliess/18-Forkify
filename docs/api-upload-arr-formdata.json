@@ -1,0 +1,16 @@
+{
+  "formData": [
+    ["title", "TEST"],
+    ["sourceUrl", "TEST"],
+    ["image", "TEST"],
+    ["publisher", "TEST"],
+    ["cookingTime", "23"],
+    ["servings", "23"],
+    ["ingredient-1", "0.5,kg,Rice"],
+    ["ingredient-2", "1,,Avocado"],
+    ["ingredient-3", ",,Salt"],
+    ["ingredient-4", ""],
+    ["ingredient-5", ""],
+    ["ingredient-6", ""]
+  ]
+}

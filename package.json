@@ -1,6 +1,9 @@
 {
   "name": "forkify",
   "version": "1.0.0",
+  "description": "Recipe Finding Application",
+  "default": "index.html",
+  "browserslist": "> 1%, last 2 versions, not dead",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.6.1",
     "parcel": "^2.6.1",
@@ -9,12 +12,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html --dist-dir ./dist"
   },
   "keywords": [],
   "author": "Reinhard Liess",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "fracty": "^1.0.11"
   }

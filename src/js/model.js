@@ -1,5 +1,12 @@
-import { camelCaseKeys, getJSON } from "./helpers";
+import {
+  camelCaseKeys,
+  snakeCaseKeys,
+  AJAX,
+  sendJSON,
+  partition,
+} from "./helpers";
 import { API_URL, RESULTS_PER_PAGE } from "./config";
+import { DEFAULT_FORM_DATA } from "./config";
 
 export const state = {
   recipe: {},
@@ -18,7 +25,7 @@ export const state = {
  */
 export const loadRecipe = async (id) => {
   try {
-    const data = await getJSON(`${API_URL}/${id}`);
+    const data = await AJAX(`${API_URL}/${id}`);
     state.recipe = camelCaseKeys(data.data.recipe);
     state.recipe.bookmarked = !!state.bookmarks.find(
       (bookmark) => bookmark.id === state.recipe.id
@@ -41,17 +48,85 @@ export const updateServings = (numServings) => {
   state.recipe.servings = numServings;
 };
 
+/**
+ * Adds current recipe to bookmarks
+ */
 export const addBookmark = () => {
   state.bookmarks.push(state.recipe);
   state.recipe.bookmarked = true;
+  saveBookmarks();
 };
 
+/**
+ * Removes current recipe from bookmarks
+ */
 export const removeBookmark = () => {
   const index = state.bookmarks.findIndex(
     (bookmark) => bookmark.id === state.recipe.id
   );
   state.bookmarks.splice(index, 1);
   state.recipe.bookmarked = false;
+  saveBookmarks();
+};
+
+/**
+ * Creates recipe object from form data
+ * @param {any[]} formData - data from form
+ * @returns {object} recipe
+ */
+const _createUploadData = (formData) => {
+  try {
+    const partitioned = partition(formData, (arr) =>
+      arr[0].startsWith("ingredient")
+    );
+    ingredients = partitioned[0]
+      .map((arr) => arr[1])
+      .filter((ingredient) => ingredient.trim())
+      .map((ingredient, index) => {
+        const arr = ingredient.split(",").map((el) => el.trim());
+        if (arr.length !== 3) {
+          throw new Error(
+            `Invalid data for ingredient&nbsp;${
+              index + 1
+            }: '${ingredient}'. Correct format is: Quantity,Unit,Description`
+          );
+        }
+        const [_, unit, description] = arr;
+        const quantity = arr[0] ? +arr[0] : null;
+        return { quantity, unit, description };
+      });
+    const props = snakeCaseKeys(Object.fromEntries(partitioned[1]));
+    const data = {
+      ...props,
+      ingredients,
+    };
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Return default data for add recipe form
+ * @returns {object} default form data
+ */
+export const getDefaultFormData = () => {
+  return DEFAULT_FORM_DATA;
+};
+
+/**
+ * Sends new recipe to server via api
+ * @param {any[]} formData - data from form
+ */
+export const uploadRecipe = async (formData) => {
+  try {
+    const formattedData = _createUploadData(formData);
+    const resData = await sendJSON(`${API_URL}`, formattedData);
+    state.recipe = camelCaseKeys(resData.data.recipe);
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
 };
 
 /**
@@ -61,7 +136,7 @@ export const removeBookmark = () => {
 export const loadSearchResults = async (query) => {
   try {
     state.search.query = query;
-    const data = await getJSON(`${API_URL}?search=${query}`);
+    const data = await AJAX(`${API_URL}?search=${query}`);
     state.search.results = data.data.recipes.map((recipe) =>
       camelCaseKeys(recipe)
     );
@@ -84,10 +159,16 @@ export const getPaginationResults = (page = state.search.currentPage) => {
   return results.slice(offset, offset + resultsPerPage);
 };
 
+/**
+ * Saves bookmarks to local storage
+ */
 export const saveBookmarks = () => {
   localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
 };
 
+/**
+ * Loads bookmarks from local storage
+ */
 export const loadBookmarks = () => {
   const storedBookmarks = localStorage.getItem("bookmarks");
   if (storedBookmarks) {

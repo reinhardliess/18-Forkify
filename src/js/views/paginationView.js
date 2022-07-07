@@ -4,6 +4,10 @@ import View from "./view";
 class PaginationView extends View {
   _parentElement = document.querySelector(".pagination");
 
+  /**
+   * Installs handler for pagination buttons
+   * @param {function} handler - handler for pagination buttons
+   */
   addHandlerPagination(handler) {
     this._parentElement.addEventListener("click", function (e) {
       const btn = e.target.closest(".btn--inline");
@@ -17,7 +21,6 @@ class PaginationView extends View {
   }
 
   _generateMarkup() {
-    // console.log(this._data);
 
     const { currentPage, numPages } = this._data;
     let markup = "";

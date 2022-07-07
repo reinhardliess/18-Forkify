@@ -1,4 +1,6 @@
+import icons from "url:../../img/icons.svg";
 import View from "./view";
+import { API_KEY } from "../apikey";
 
 export default class ResultsView extends View {
   _generateMarkup() {
@@ -9,6 +11,7 @@ export default class ResultsView extends View {
   _generateResultMarkup(result) {
     const id = window.location.hash.slice(1);
     const className = result.id === id ? "preview__link--active" : "";
+    const userGeneratedState = result.key !== API_KEY ? "hidden" : "";
     const html = `
     <li class="preview">
       <a class="preview__link ${className}" href="#${result.id}">
@@ -18,9 +21,9 @@ export default class ResultsView extends View {
         <div class="preview__data">
           <h4 class="preview__title">${result.title}</h4>
           <p class="preview__publisher">${result.publisher}</p>
-          <div class="preview__user-generated">
+          <div class="preview__user-generated ${userGeneratedState}">
             <svg>
-              <use href="src/img/icons.svg#icon-user"></use>
+              <use href="${icons}#icon-user"></use>
             </svg>
           </div>
         </div>

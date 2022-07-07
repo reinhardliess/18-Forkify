@@ -11,6 +11,9 @@ class SearchView {
     return this._inputSearch.value;
   }
 
+  /**
+   * Clears search input field
+   */
   clearSearchInput() {
     this._inputSearch.value = "";
   }

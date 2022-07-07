@@ -1,9 +1,13 @@
 import * as model from "./model";
 import recipeView from "./views/recipeView";
 import bookmarksView from "./views/bookmarksView";
+import addRecipeView from "./views/addRecipeView";
 import searchView from "./views/searchView";
 import searchResultsView from "./views/searchResultsView";
 import paginationView from "./views/paginationView";
+import { ADD_RECIPE_MESSAGE_TIMEOUT } from "./config";
+
+import { async } from "regenerator-runtime";
 
 // https://forkify-api.herokuapp.com/v2
 
@@ -21,7 +25,6 @@ const controlRecipes = async () => {
     await model.loadRecipe(id);
     recipeView.render(model.state.recipe);
     searchResultsView.update(model.getPaginationResults());
-    // bookmarksView.render(model.state.bookmarks);
     bookmarksView.update(model.state.bookmarks);
   } catch (error) {
     console.error(error.message);
@@ -44,11 +47,44 @@ const controlBookmarks = (bookmarkedState) => {
     }
     recipeView.update(model.state.recipe);
     bookmarksView.render(model.state.bookmarks);
-    console.log(model.state.bookmarks);
-    model.saveBookmarks();
   } catch (error) {
     bookmarksView.renderErrorMessage();
     console.error(error);
+  }
+};
+
+/**
+ * Called when add recipe button clicked
+ * Generates html form with default form data
+ */
+const controlAddRecipe = () => {
+  addRecipeView.render(model.getDefaultFormData());
+  addRecipeView.toggleDialog();
+  addRecipeView.addHandlerUpload(controlUploadRecipe);
+};
+
+const controlUploadRecipe = async (formData) => {
+  try {
+    addRecipeView.renderSpinner();
+
+    await model.uploadRecipe(formData);
+    recipeView.render(model.state.recipe);
+
+    // Change ID in URL
+    window.history.pushState(null, "", `#${model.state.recipe.id}`);
+
+    addRecipeView.renderMessage(
+      `The new recipe with the title "${model.state.recipe.title}" was added successfully!`
+    );
+    model.addBookmark();
+    bookmarksView.render(model.state.bookmarks);
+    setTimeout(
+      addRecipeView.toggleDialog.bind(addRecipeView),
+      ADD_RECIPE_MESSAGE_TIMEOUT
+    );
+  } catch (error) {
+    console.error(error);
+    addRecipeView.renderErrorMessage(error.message);
   }
 };
 
@@ -83,6 +119,7 @@ const init = () => {
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerServings(controlServings);
   recipeView.addHandlerToggleBookmark(controlBookmarks);
+  addRecipeView.addHandlerAddRecipe(controlAddRecipe);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerPagination(controlPagination);
   model.loadBookmarks();
