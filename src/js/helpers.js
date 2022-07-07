@@ -81,24 +81,6 @@ export const partition = (arr, fn) =>
  * @param {string} id - recipe id
  * @returns {Promise} data from api
  */
-export const getJSON = async (url) => {
-  try {
-    const res = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]);
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(`API error: ${data.message} (${res.status})`);
-    }
-    return data;
-  } catch (error) {
-    throw new Error(error);
-  }
-};
-
-/**
- * Get data in JSON from api
- * @param {string} id - recipe id
- * @returns {Promise} data from api
- */
 export const AJAX = async (baseUrl, postData = null) => {
   try {
     let options;
@@ -111,33 +93,6 @@ export const AJAX = async (baseUrl, postData = null) => {
         body: JSON.stringify(postData),
       };
     }
-    const url = `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}key=${API_KEY}`;
-    const res = await Promise.race([fetch(url, options), timeout(TIMEOUT_SEC)]);
-    const resData = await res.json();
-    if (!res.ok) {
-      throw new Error(`API error: ${resData.message} (${res.status})`);
-    }
-    return resData;
-  } catch (error) {
-    console.error(error);
-    throw new Error(error.message);
-  }
-};
-
-/**
- * Get data in JSON from api
- * @param {string} id - recipe id
- * @returns {Promise} data from api
- */
-export const sendJSON = async (baseUrl, postData) => {
-  try {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    };
     const url = `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}key=${API_KEY}`;
     const res = await Promise.race([fetch(url, options), timeout(TIMEOUT_SEC)]);
     const resData = await res.json();

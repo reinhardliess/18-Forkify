@@ -2,7 +2,6 @@ import {
   camelCaseKeys,
   snakeCaseKeys,
   AJAX,
-  sendJSON,
   partition,
 } from "./helpers";
 import { API_URL, RESULTS_PER_PAGE } from "./config";
@@ -121,7 +120,7 @@ export const getDefaultFormData = () => {
 export const uploadRecipe = async (formData) => {
   try {
     const formattedData = _createUploadData(formData);
-    const resData = await sendJSON(`${API_URL}`, formattedData);
+    const resData = await AJAX(`${API_URL}`, formattedData);
     state.recipe = camelCaseKeys(resData.data.recipe);
   } catch (error) {
     console.error(error);
