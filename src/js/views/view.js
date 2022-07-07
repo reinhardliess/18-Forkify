@@ -5,7 +5,7 @@ export default class View {
 
   /**
    * Render recipe
-   * @param {object} data - recipe object from api
+   * @param {any} data - data to be used for generating markup
    */
   render(data) {
     if (!data || (Array.isArray(data) && data.length === 0)) {
@@ -14,11 +14,10 @@ export default class View {
 
     this._clear();
     this._data = data;
+
+    // No markup is returned if there are no pagination buttons to be rendered
     const markup = this._generateMarkup();
-    if (markup) {
-      this._parentElement.insertAdjacentHTML("afterbegin", markup);
-      // this._parentElement.insertAdjacentHTML("beforeend", markup);
-    }
+    markup && this._parentElement.insertAdjacentHTML("beforeend", markup);
   }
 
   /**
@@ -70,7 +69,7 @@ export default class View {
         </svg>
       </div>`;
     this._clear();
-    this._parentElement.insertAdjacentHTML("afterbegin", html);
+    this._parentElement.insertAdjacentHTML("beforeend", html);
   }
 
   /**
@@ -97,7 +96,7 @@ export default class View {
     </div>
     `;
     this._clear();
-    this._parentElement.insertAdjacentHTML("afterbegin", markup);
+    this._parentElement.insertAdjacentHTML("beforeend", markup);
   }
 
   /**
@@ -116,6 +115,6 @@ export default class View {
       </div>
     `;
     this._clear();
-    this._parentElement.insertAdjacentHTML("afterbegin", markup);
+    this._parentElement.insertAdjacentHTML("beforeend", markup);
   }
 }

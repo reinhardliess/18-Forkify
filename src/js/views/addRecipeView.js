@@ -11,12 +11,30 @@ class AddRecipeView extends View {
       .addEventListener("click", this._handlerDialogClose.bind(this));
   }
 
+  _clear() {
+    this._parentElement.innerHTML = "";
+
+    const specialMarkup = this._generateSpecialMarkup();
+    this._parentElement.insertAdjacentHTML("afterbegin", specialMarkup);
+    this._addHandlerDialogClose();
+  }
+
+  /**
+   * Generates markup to create close button
+   * @returns {string} generates markup to create close button
+   */
+  _generateSpecialMarkup() {
+    const markup = `
+    <button class="btn--close-modal">&times;</button>
+    `;
+    return markup;
+  }
+
   /**
    * Generate recipe markup
    */
   _generateMarkup() {
     const markup = `
-      <button class="btn--close-modal">&times;</button>
       <form class="upload">
         <div class="upload__column">
           <h3 class="upload__heading">Recipe data</h3>
@@ -133,7 +151,7 @@ class AddRecipeView extends View {
       .addEventListener("click", (e) => {
         e.preventDefault();
         handler();
-        this._addHandlerDialogClose();
+        // this._addHandlerDialogClose();
       });
   }
 
