@@ -40,14 +40,14 @@ class RecipeView extends View {
             <span class="recipe__info-text">servings</span>
 
             <div class="recipe__info-buttons">
-              <button class="btn--tiny btn--update-servings" data-servings="${
+        <button aria-label="Reduce servings" class="btn--tiny btn--update-servings" data-servings="${
                 this._data.servings - 1
               }">
                 <svg>
                   <use href="${icons}#icon-minus-circle"></use>
                 </svg>
               </button>
-              <button class="btn--tiny btn--update-servings" data-servings="${
+              <button aria-label="Increase servings" class="btn--tiny btn--update-servings" data-servings="${
                 this._data.servings + 1
               }">
                 <svg>
@@ -61,7 +61,7 @@ class RecipeView extends View {
               <use href="${icons}#icon-user"></use>
             </svg>
           </div>
-          <button class="btn--round btn-toggle-bookmark" data-bookmarked="${
+          <button aria-label="Toggle bookmark" class="btn--round btn-toggle-bookmark" data-bookmarked="${
             this._data.bookmarked ? 1 : 0
           }">
             <svg class="">
