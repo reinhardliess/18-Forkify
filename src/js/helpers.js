@@ -1,4 +1,3 @@
-import icons from "url:../img/icons.svg";
 import { TIMEOUT_SEC } from "./config";
 import { API_KEY } from "./apikey";
 
@@ -16,8 +15,7 @@ const timeout = (s) => {
 };
 
 /**
- * Converts string to camelCase
- * @param {string} str
+q * @param {string} str
  * @returns str converted to camelCase
  */
 export const toCamelCase = (str) => {
@@ -40,26 +38,31 @@ const toSnakeCase = (str) =>
     .join("_");
 
 /**
+ * Creates key mapper function for objects
+ * @param {function(string):string} fn - function to transform key names
+ * @returns {function} function(object)
+ */
+const keyMapper = (fn) => {
+  return (obj) =>
+    Object.keys(obj).reduce((acc, key) => {
+      acc[fn(key)] = obj[key];
+      return acc;
+    }, {});
+};
+
+/**
  * Converts keys of an object to camelCase (shallow)
  * @param {object} obj - object to convert
  * @returns {object} new object
  */
-export const camelCaseKeys = (obj) =>
-  Object.keys(obj).reduce((acc, key) => {
-    acc[toCamelCase(key)] = obj[key];
-    return acc;
-  }, {});
+export const camelCaseKeys = keyMapper(toCamelCase);
 
 /**
  * Converts keys of an object to Snake_case (shallow)
  * @param {object} obj - object to convert
  * @returns {object} new object
  */
-export const snakeCaseKeys = (obj) =>
-  Object.keys(obj).reduce((acc, key) => {
-    acc[toSnakeCase(key)] = obj[key];
-    return acc;
-  }, {});
+export const snakeCaseKeys = keyMapper(toSnakeCase);
 
 /**
  * Partitions array into two, using a filter function

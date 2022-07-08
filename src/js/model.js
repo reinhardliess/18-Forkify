@@ -71,7 +71,7 @@ export const removeBookmark = () => {
 /**
  * Creates recipe object from form data
  * @param {any[]} formData - data from form
- * @returns {object} recipe
+ * @returns {object} recipe object
  */
 const _createUploadData = (formData) => {
   try {
