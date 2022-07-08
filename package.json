@@ -5,14 +5,14 @@
   "default": "index.html",
   "browserslist": "> 1%, last 2 versions, not dead",
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.6.1",
-    "parcel": "^2.6.1",
+    "@parcel/transformer-sass": "^2.6.2",
+    "parcel": "^2.6.2",
     "prettier": "^2.7.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel index.html",
-    "build": "parcel build index.html --dist-dir ./dist"
+    "build": "parcel build index.html  --no-optimize --dist-dir ./build"
   },
   "keywords": [],
   "author": "Reinhard Liess",
