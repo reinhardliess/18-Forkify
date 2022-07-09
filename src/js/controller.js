@@ -59,7 +59,7 @@ const controlBookmarks = (bookmarkedState) => {
  */
 const controlAddRecipe = () => {
   addRecipeView.render(model.getDefaultFormData());
-  addRecipeView.toggleDialog();
+  addRecipeView.showDialog();
   addRecipeView.addHandlerUpload(controlUploadRecipe);
 };
 
@@ -79,7 +79,7 @@ const controlUploadRecipe = async (formData) => {
     model.addBookmark();
     bookmarksView.render(model.state.bookmarks);
     setTimeout(
-      addRecipeView.toggleDialog.bind(addRecipeView),
+      addRecipeView.closeDialog.bind(addRecipeView),
       ADD_RECIPE_MESSAGE_TIMEOUT
     );
   } catch (error) {

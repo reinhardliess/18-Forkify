@@ -1,9 +1,4 @@
-import {
-  camelCaseKeys,
-  snakeCaseKeys,
-  AJAX,
-  partition,
-} from "./helpers";
+import { camelCaseKeys, snakeCaseKeys, AJAX, partition } from "./helpers";
 import { API_URL, RESULTS_PER_PAGE } from "./config";
 import { DEFAULT_FORM_DATA } from "./config";
 
@@ -78,7 +73,7 @@ const _createUploadData = (formData) => {
     const partitioned = partition(formData, (arr) =>
       arr[0].startsWith("ingredient")
     );
-    ingredients = partitioned[0]
+    const ingredients = partitioned[0]
       .map((arr) => arr[1])
       .filter((ingredient) => ingredient.trim())
       .map((ingredient, index) => {

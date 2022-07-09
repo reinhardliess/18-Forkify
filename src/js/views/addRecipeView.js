@@ -94,19 +94,22 @@ class AddRecipeView extends View {
           <label>Ingredient 4</label>
           <input
             type="text"
-            name="${this._data.ingredients[3]}"
+            name="ingredient-4"
+            value="${this._data.ingredients[3]}"
             placeholder="Format: 'Quantity,Unit,Description'"
           />
           <label>Ingredient 5</label>
           <input
             type="text"
-            name="${this._data.ingredients[4]}"
+            name="ingredient-5"
+            value="${this._data.ingredients[4]}"
             placeholder="Format: 'Quantity,Unit,Description'"
           />
           <label>Ingredient 6</label>
           <input
             type="text"
-            name="${this._data.ingredients[5]}"
+            name="ingredient-6"
+            value="${this._data.ingredients[5]}"
             placeholder="Format: 'Quantity,Unit,Description'"
           />
         </div>
@@ -123,16 +126,24 @@ class AddRecipeView extends View {
   }
 
   /**
-   * Toggles add recipe input form
+   * Closes add recipe input form
    */
-  toggleDialog() {
-    this._parentElement.classList.toggle("hidden");
-    document.querySelector(".overlay").classList.toggle("hidden");
+  closeDialog() {
+    this._parentElement.classList.add("hidden");
+    document.querySelector(".overlay").classList.add("hidden");
+  }
+
+  /**
+   * Shows add recipe input form
+   */
+  showDialog() {
+    this._parentElement.classList.remove("hidden");
+    document.querySelector(".overlay").classList.remove("hidden");
   }
 
   _handlerDialogClose(e) {
     e.preventDefault();
-    this.toggleDialog();
+    this.closeDialog();
   }
 
   _addHandlerDialogClose() {

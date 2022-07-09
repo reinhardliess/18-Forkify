@@ -1,7 +1,7 @@
 export const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes";
 export const TIMEOUT_SEC = 10;
 export const RESULTS_PER_PAGE = 10;
-export const ADD_RECIPE_MESSAGE_TIMEOUT = 2500
+export const ADD_RECIPE_MESSAGE_TIMEOUT = 2500;
 
 export const DEFAULT_FORM_DATA = {
   title: "Einfaches Broccoli Gratin",
@@ -11,5 +11,12 @@ export const DEFAULT_FORM_DATA = {
   publisher: "Maggi",
   cookingTime: 32,
   servings: 3,
-  ingredients: ["0.5,kg,Rice", "1,,Avocado", ",,Salt", "", "", ""],
+  ingredients: [
+    "300,g,Broccoli",
+    "50, g, geriebener Käse",
+    "350, ml, Wasser",
+    "20, g, Butter",
+    "",
+    "",
+  ],
 };

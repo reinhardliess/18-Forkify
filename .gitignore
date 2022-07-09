@@ -3,5 +3,5 @@
 dist/
 build/
 node_modules
-
+.netlify
 src/js/apikey.js
